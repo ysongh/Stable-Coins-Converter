@@ -21,13 +21,13 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
-      chainId: 4
+      chainId: 42
     },
-    // npx hardhat run scripts/sample-script.js --network rinkeby
-    rinkeby: {
-      url: `https://eth-rinkeby.gateway.pokt.network/v1/lb/${process.env.POKT_NETWORK_KEY}`,
+    // npx hardhat run scripts/sample-script.js --network kovan
+    kovan: {
+      url: `https://eth-kovan.alchemyapi.io/v2/${process.env.ALCHEMYAPI_KEY}`,
       accounts: [process.env.PRIVATEKEY],
-      gasPrice: 8000000000     // Default is 'auto' which breaks chains without the london hardfork
+      gasPrice: 8000000000     // default is 'auto' which breaks chains without the london hardfork
     }
   },
   solidity: {
@@ -38,5 +38,10 @@ module.exports = {
         runs: 200
       }
     }
+  },
+  // set the path to compile the contracts
+  paths: {
+    artifacts: './src/artifacts',
+    cache: './src/cache',
   }
 };
