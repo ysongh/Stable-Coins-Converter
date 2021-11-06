@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Input, Button } from 'semantic-ui-react'
 import { ethers } from 'ethers';
-import Web3Modal from 'web3modal'
+import Web3Modal from 'web3modal';
 
 import SwapExamples from './artifacts/contracts/SwapExamples.sol/SwapExamples.json'
 import { SWAPEXAMPLESADDRESS } from './config';
@@ -45,27 +46,27 @@ function App() {
   return (
     <div>
       <h1>Stable Coins Converter</h1>
-        <button
+        <Button
           onClick={connectWallet}
         >
           {address ? address : "Connect to Wallet"}
-        </button>
+        </Button>
         <br />
         <br />
         <h2>Convert to DAI and send</h2>
-        <input
+        <Input
           value={recipientAddress}
           placeholder="address"
           onChange={(e) => setRecipientAddress(e.target.value)} /> 
-        <input
+        <Input
           value={ethValue}
           placeholder="ETH"
           onChange={(e) => setEthValue(e.target.value)} /> 
-        <button
+        <Button
           onClick={convertAndSend}
         >
           Send
-        </button>
+        </Button>
     </div>
   );
 }
