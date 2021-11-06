@@ -5,12 +5,17 @@ import { Container, Form, Card, Input, Button } from 'semantic-ui-react';
 function SendForm({ walletAddress, swapContract }) {
   const [ethValue, setEthValue] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
+  const [addressList, setAddressList] = useState([]);
 
+  const addAddressToList = () => {
+    setAddressList([...addressList, recipientAddress]);
+    setRecipientAddress('');
+  }
   const convertAndSend = async () => {
     let value = ethers.utils.parseUnits(ethValue, 'ether');
     console.log(ethValue.toString());
 
-    let transaction = await swapContract.convertExactEthToDai(recipientAddress, {
+    let transaction = await swapContract.convertExactEthToDai(addressList, addressList.length , {
       value: value
     });
     let tx = await transaction.wait();
@@ -25,21 +30,26 @@ function SendForm({ walletAddress, swapContract }) {
           <h2>Convert to DAI and send</h2>
           <Form>
             <Form.Field>
-              <label>Address *</label>
-              <Input
-                value={recipientAddress}
-                placeholder="address"
-                onChange={(e) => setRecipientAddress(e.target.value)} /> 
-            </Form.Field>
-
-            <Form.Field>
-              <label>Amount *</label>
+              <label>Amount (In ETH)</label>
               <Input
                 value={ethValue}
                 placeholder="ETH"
                 onChange={(e) => setEthValue(e.target.value)} /> 
             </Form.Field>
-            
+
+            <Form.Field>
+              <label>Address *</label>
+              <Input
+                value={recipientAddress}
+                placeholder="address"
+                onChange={(e) => setRecipientAddress(e.target.value)}>
+                   <input />
+                  <Button onClick={addAddressToList}>Add</Button>
+              </Input> 
+            </Form.Field>
+
+            {addressList.map(address => <p>{address}</p>)}
+
             {walletAddress
               ? <Button
                   type='submit'
