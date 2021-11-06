@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Input, Button } from 'semantic-ui-react'
+import { Container, Input, Button } from 'semantic-ui-react'
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 
-import SwapExamples from './artifacts/contracts/SwapExamples.sol/SwapExamples.json'
+import SwapExamples from './artifacts/contracts/SwapExamples.sol/SwapExamples.json';
+import Navbar from './components/layout/Navbar';
 import { SWAPEXAMPLESADDRESS } from './config';
 
 const SwapExamplesAddress = SWAPEXAMPLESADDRESS;
@@ -45,28 +46,26 @@ function App() {
 
   return (
     <div>
-      <h1>Stable Coins Converter</h1>
-        <Button
-          onClick={connectWallet}
-        >
-          {address ? address : "Connect to Wallet"}
-        </Button>
+      <Navbar
+        walletAddress={address}
+        connectWallet={connectWallet} />
         <br />
-        <br />
-        <h2>Convert to DAI and send</h2>
-        <Input
-          value={recipientAddress}
-          placeholder="address"
-          onChange={(e) => setRecipientAddress(e.target.value)} /> 
-        <Input
-          value={ethValue}
-          placeholder="ETH"
-          onChange={(e) => setEthValue(e.target.value)} /> 
-        <Button
-          onClick={convertAndSend}
-        >
-          Send
-        </Button>
+        <Container>
+          <h2>Convert to DAI and send</h2>
+          <Input
+            value={recipientAddress}
+            placeholder="address"
+            onChange={(e) => setRecipientAddress(e.target.value)} /> 
+          <Input
+            value={ethValue}
+            placeholder="ETH"
+            onChange={(e) => setEthValue(e.target.value)} /> 
+          <Button
+            onClick={convertAndSend}
+          >
+            Send
+          </Button>
+      </Container>
     </div>
   );
 }
