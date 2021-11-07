@@ -84,7 +84,7 @@ function SendForm({ walletAddress, swapContract }) {
             </p>
           }
 
-        {loading && <Spinner text="Sending..." />}
+        {loading && <Spinner text="Converting and Sending..." />}
         </Card.Content>
       </Card>
     </Container>

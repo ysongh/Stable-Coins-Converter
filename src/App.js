@@ -3,13 +3,13 @@ import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 
 
-import SwapExamples from './artifacts/contracts/SwapExamples.sol/SwapExamples.json';
+import StableCoinsConverter from './artifacts/contracts/StableCoinsConverter.sol/StableCoinsConverter.json';
 import Navbar from './components/layout/Navbar';
 import SendForm from './components/SendForm';
-import { SWAPEXAMPLESADDRESS } from './config';
+import { STABLECOINSCONVERTERADDRESS } from './config';
 import './App.css';
 
-const SwapExamplesAddress = SWAPEXAMPLESADDRESS;
+const StableCoinsConverterAddress = STABLECOINSCONVERTERADDRESS;
 
 function App() {
   const [address, setAddress] = useState('');
@@ -28,7 +28,7 @@ function App() {
     const walletAddress = await signer.getAddress();
     setAddress(walletAddress);
 
-    let contract = new ethers.Contract(SwapExamplesAddress, SwapExamples.abi, signer);
+    let contract = new ethers.Contract(StableCoinsConverterAddress, StableCoinsConverter.abi, signer);
     setSwapContract(contract);
   }
 

@@ -13,13 +13,20 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+  
+
+  // Kovan Testnet
+  const uniswapRouter = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
+  const multiDaiKovan = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
+  const WETH9 = "0xd0A1E359811322d97991E03f863a0C30C2cF029C";
+
   // We get the contract to deploy
-  const SwapExamples = await hre.ethers.getContractFactory("SwapExamples");
-  const swapExamples = await SwapExamples.deploy();
+  const StableCoinsConverter = await hre.ethers.getContractFactory("StableCoinsConverter");
+  const stableCoinsConverter = await StableCoinsConverter.deploy(uniswapRouter, multiDaiKovan, WETH9);
 
-  await swapExamples.deployed();
+  await stableCoinsConverter.deployed();
 
-  console.log("SwapExamples deployed to:", swapExamples.address);
+  console.log("StableCoinsConverter deployed to:", stableCoinsConverter.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

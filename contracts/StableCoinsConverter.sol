@@ -10,12 +10,16 @@ interface IUniswapRouter is ISwapRouter {
   function refundETH() external payable;
 }
 
-contract SwapExamples {
-  IUniswapRouter public constant uniswapRouter = IUniswapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
-  address private constant multiDaiKovan = 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa;
-  address private constant WETH9 = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
+contract StableCoinsConverter {
+  IUniswapRouter public uniswapRouter;
+  address private multiDaiKovan;
+  address private WETH9;
 
-  constructor() {}
+  constructor(address _uniswapRouter, address _multiDaiKovan, address _WETH9) {
+    uniswapRouter = IUniswapRouter(_uniswapRouter);
+    multiDaiKovan = _multiDaiKovan;
+    WETH9 = _WETH9;
+  }
 
   function convertExactEthToDai(address[] memory _recipients, uint _arrLength) external payable {
     require(msg.value > 0, "Must pass non 0 ETH amount");
