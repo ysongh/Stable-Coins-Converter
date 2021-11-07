@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 
+
 import SwapExamples from './artifacts/contracts/SwapExamples.sol/SwapExamples.json';
 import Navbar from './components/layout/Navbar';
 import SendForm from './components/SendForm';
 import { SWAPEXAMPLESADDRESS } from './config';
+import './App.css';
 
 const SwapExamplesAddress = SWAPEXAMPLESADDRESS;
 

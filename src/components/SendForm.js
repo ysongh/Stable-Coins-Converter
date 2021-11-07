@@ -2,25 +2,39 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import { Container, Form, Card, Input, Button } from 'semantic-ui-react';
 
+import Spinner from '../components/common/Spinner';
+
 function SendForm({ walletAddress, swapContract }) {
   const [ethValue, setEthValue] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
+  const [transactionHash, setTransactionHash] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const addAddressToList = () => {
     setAddressList([...addressList, recipientAddress]);
     setRecipientAddress('');
   }
+
   const convertAndSend = async () => {
-    let value = ethers.utils.parseUnits(ethValue, 'ether');
-    console.log(ethValue.toString());
+    try{
+      setLoading(true);
 
-    let transaction = await swapContract.convertExactEthToDai(addressList, addressList.length , {
-      value: value
-    });
-    let tx = await transaction.wait();
+      let value = ethers.utils.parseUnits(ethValue, 'ether');
+      console.log(ethValue.toString());
 
-    console.log(tx);
+      let transaction = await swapContract.convertExactEthToDai(addressList, addressList.length , {
+        value: value
+      });
+      let tx = await transaction.wait();
+
+      console.log(tx);
+      setLoading(false);
+      setTransactionHash(tx.transactionHash);
+    } catch(err) {
+      console.error(err);
+      setLoading(false);
+    }
   }
 
   return (
@@ -60,6 +74,17 @@ function SendForm({ walletAddress, swapContract }) {
               : <p>Connect to your wallet</p>
             }
           </Form>
+
+          {transactionHash &&
+            <p className="transactionHash">
+              Success, see transaction {" "}
+              <a href={`https://kovan.etherscan.io/tx/${transactionHash}`} target="_blank" rel="noopener noreferrer">
+                {transactionHash.substring(0, 10) + '...' + transactionHash.substring(56, 66)}
+              </a>
+            </p>
+          }
+
+        {loading && <Spinner text="Sending..." />}
         </Card.Content>
       </Card>
     </Container>
