@@ -94,7 +94,7 @@ function SendForm({ walletAddress, swapContract }) {
             </List>
 
             <Form.Field>
-              <label>Amount (In DAI) *</label>
+              <label>Amount of DAI to receive *</label>
               <Input>
                 <input value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
               </Input>
