@@ -13,6 +13,7 @@ const StableCoinsConverterAddress = STABLECOINSCONVERTERADDRESS;
 
 function App() {
   const [address, setAddress] = useState('');
+  const [ethBalance, setEthBalance] = useState('');
   const [swapContract, setSwapContract] = useState(null);
 
   const connectWallet = async () => {
@@ -28,6 +29,9 @@ function App() {
     const walletAddress = await signer.getAddress();
     setAddress(walletAddress);
 
+    const balance = await signer.getBalance();
+    setEthBalance(balance.toString());
+
     let contract = new ethers.Contract(StableCoinsConverterAddress, StableCoinsConverter.abi, signer);
     setSwapContract(contract);
   }
@@ -36,6 +40,7 @@ function App() {
     <div>
       <Navbar
         walletAddress={address}
+        ethBalance={ethBalance}
         connectWallet={connectWallet} />
 
       <SendForm
