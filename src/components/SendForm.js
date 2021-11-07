@@ -5,6 +5,7 @@ import { Container, Form, Card, Input, Button } from 'semantic-ui-react';
 import Spinner from '../components/common/Spinner';
 
 function SendForm({ walletAddress, swapContract }) {
+  const [daiAmount, setDaiAmount] = useState('');
   const [ethValue, setEthValue] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
@@ -14,6 +15,19 @@ function SendForm({ walletAddress, swapContract }) {
   const addAddressToList = () => {
     setAddressList([...addressList, recipientAddress]);
     setRecipientAddress('');
+  }
+
+  const findETHAmountNeeded = async value => {
+    setDaiAmount(value);
+    
+    if(!walletAddress) return;
+    if(!value) {
+      setEthValue(0);
+      return;
+    }
+
+    const requiredEth = await swapContract.callStatic.getEstimatedETHforDAI(ethers.utils.parseUnits(value, 'ether'));
+    setEthValue(ethers.utils.formatUnits(requiredEth.toString(), 'ether'));
   }
 
   const convertAndSend = async () => {
@@ -44,11 +58,10 @@ function SendForm({ walletAddress, swapContract }) {
           <h2>Convert to DAI and send</h2>
           <Form>
             <Form.Field>
-              <label>Amount (In ETH)</label>
-              <Input
-                value={ethValue}
-                placeholder="ETH"
-                onChange={(e) => setEthValue(e.target.value)} /> 
+              <label>Amount to get (In DAI) *</label>
+              <Input>
+                <input text="number" value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
+              </Input>
             </Form.Field>
 
             <Form.Field>
@@ -65,12 +78,16 @@ function SendForm({ walletAddress, swapContract }) {
             {addressList.map(address => <p>{address}</p>)}
 
             {walletAddress
-              ? <Button
-                  type='submit'
-                  onClick={convertAndSend}
-                >
-                  Send
-                </Button>
+              ? 
+                <div className="btnandprice">
+                  <Button
+                    type='submit'
+                    onClick={convertAndSend}
+                  >
+                    Send
+                  </Button>
+                  <p>{(+ethValue).toFixed(5)} ETH required</p>
+                </div>
               : <p>Connect to your wallet</p>
             }
           </Form>

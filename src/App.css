@@ -3,3 +3,13 @@
     font-size: 1.4rem;
     margin-top: 1rem !important;
 }
+
+.btnandprice {
+    display: flex;
+    align-items: center;
+}
+
+.btnandprice > p {
+    font-size: 1.4rem;
+    margin-left: .7rem !important;
+}

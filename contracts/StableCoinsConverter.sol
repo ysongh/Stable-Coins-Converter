@@ -4,7 +4,7 @@ pragma abicoder v2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
 
 interface IUniswapRouter is ISwapRouter {
   function refundETH() external payable;
@@ -12,11 +12,13 @@ interface IUniswapRouter is ISwapRouter {
 
 contract StableCoinsConverter {
   IUniswapRouter public uniswapRouter;
+  IQuoter public quoter;
   address private multiDaiKovan;
   address private WETH9;
 
-  constructor(address _uniswapRouter, address _multiDaiKovan, address _WETH9) {
+  constructor(address _uniswapRouter, address _quoter, address _multiDaiKovan, address _WETH9) {
     uniswapRouter = IUniswapRouter(_uniswapRouter);
+    quoter = IQuoter(_quoter);
     multiDaiKovan = _multiDaiKovan;
     WETH9 = _WETH9;
   }
@@ -58,6 +60,21 @@ contract StableCoinsConverter {
     (bool success,) = msg.sender.call{ value: address(this).balance }("");
     require(success, "refund failed");
   }
+
+  function getEstimatedETHforDAI(uint daiAmount) external payable returns (uint256) {
+    address tokenIn = WETH9;
+    address tokenOut = multiDaiKovan;
+    uint24 fee = 500;
+    uint160 sqrtPriceLimitX96 = 0;
+
+    return quoter.quoteExactOutputSingle(
+        tokenIn,
+        tokenOut,
+        fee,
+        daiAmount,
+        sqrtPriceLimitX96
+    );
+ }
   
   // important to receive ETH
   receive() payable external {}
