@@ -18,29 +18,36 @@ function SendForm({ walletAddress, swapContract }) {
   }
 
   const findETHAmountNeeded = async value => {
-    setDaiAmount(value);
+    try{
+      setDaiAmount(value);
     
-    if(!walletAddress) return;
-    if(!value) {
-      setEthValue(0);
-      return;
+      if(!walletAddress) return;
+      if(!value) {
+        setEthValue(0);
+        return;
+      }
+  
+      const requiredEth = await swapContract.callStatic.getEstimatedETHforDAI(ethers.utils.parseUnits(value, 'ether'));
+      const sendEth = +(requiredEth.toString()) * 1.1;
+      console.log(sendEth)
+      setEthValue(ethers.utils.formatUnits(sendEth.toString(), 'ether'));
+    } catch(err) {
+      console.error(err);
     }
-
-    const requiredEth = await swapContract.callStatic.getEstimatedETHforDAI(ethers.utils.parseUnits(value, 'ether'));
-    setEthValue(ethers.utils.formatUnits(requiredEth.toString(), 'ether'));
+    
   }
 
   const convertAndSend = async () => {
     try{
       setLoading(true);
+      
+      const ethToWei = ethers.utils.parseUnits(ethValue, 'ether');
+      const daiToWei = ethers.utils.parseUnits(daiAmount, 'ether');
 
-      let value = ethers.utils.parseUnits(ethValue, 'ether');
-      console.log(ethValue.toString());
-
-      let transaction = await swapContract.convertExactEthToDai(addressList, addressList.length , {
-        value: value
+      const transaction = await swapContract.convertEthToExactDai(addressList, addressList.length, daiToWei, {
+        value: ethToWei
       });
-      let tx = await transaction.wait();
+      const tx = await transaction.wait();
 
       console.log(tx);
       setLoading(false);
@@ -60,7 +67,7 @@ function SendForm({ walletAddress, swapContract }) {
             <Form.Field>
               <label>Amount to get (In DAI) *</label>
               <Input>
-                <input text="number" value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
+                <input value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
               </Input>
             </Form.Field>
 

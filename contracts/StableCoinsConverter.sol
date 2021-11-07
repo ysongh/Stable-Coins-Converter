@@ -15,15 +15,18 @@ contract StableCoinsConverter {
   IQuoter public quoter;
   address private multiDaiKovan;
   address private WETH9;
+  IERC20 token;
 
   constructor(address _uniswapRouter, address _quoter, address _multiDaiKovan, address _WETH9) {
     uniswapRouter = IUniswapRouter(_uniswapRouter);
     quoter = IQuoter(_quoter);
     multiDaiKovan = _multiDaiKovan;
     WETH9 = _WETH9;
+    token = IERC20(multiDaiKovan);
   }
 
-  function convertExactEthToDai(address[] memory _recipients, uint _arrLength) external payable {
+  function convertEthToExactDai(address[] memory _recipients, uint _arrLength, uint256 daiAmount) external payable {
+    require(daiAmount > 0, "Must pass non 0 DAI amount");
     require(msg.value > 0, "Must pass non 0 ETH amount");
 
     uint256 deadline = block.timestamp + 15;
@@ -31,23 +34,22 @@ contract StableCoinsConverter {
     address tokenOut = multiDaiKovan;
     uint24 fee = 3000;
     address recipient = address(this);
-    uint256 amountIn = msg.value;
-    uint256 amountOutMinimum = 1;
+    uint256 amountOut = daiAmount;
+    uint256 amountInMaximum = msg.value;
     uint160 sqrtPriceLimitX96 = 0;
-    IERC20 token = IERC20(multiDaiKovan);
     
-    ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams(
-        tokenIn,
-        tokenOut,
-        fee,
-        recipient,
-        deadline,
-        amountIn,
-        amountOutMinimum,
-        sqrtPriceLimitX96
+    ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams(
+      tokenIn,
+      tokenOut,
+      fee,
+      recipient,
+      deadline,
+      amountOut,
+      amountInMaximum,
+      sqrtPriceLimitX96
     );
     
-    uniswapRouter.exactInputSingle{ value: msg.value }(params);
+    uniswapRouter.exactOutputSingle{ value: msg.value }(params);
     uniswapRouter.refundETH();
 
     // Split DAI amount and send them to each addresses
