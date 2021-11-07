@@ -7,9 +7,21 @@
 .btnandprice {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
-.btnandprice > p {
-    font-size: 1.4rem;
+.btnandprice__labels {
+    display: flex;
+    flex-direction: column;
+}
+
+.btnandprice__labels > p {
+    font-size: 1.2rem;
     margin-left: .7rem !important;
+    margin-bottom: 0 !important;
+}
+
+.form-card {
+    min-width: 500px;
+    margin-top: 2.5rem !important;
 }

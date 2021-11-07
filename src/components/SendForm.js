@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import { Container, Form, Card, Input, Button } from 'semantic-ui-react';
+import { Container, Form, Card, Input, List, Divider, Message, Button, Icon } from 'semantic-ui-react';
 
 import Spinner from '../components/common/Spinner';
 
@@ -60,40 +60,63 @@ function SendForm({ walletAddress, swapContract }) {
 
   return (
     <Container>
-      <Card centered style={{ width: '600px'}}>
+      <Card centered className="form-card">
+        <Message
+          attached
+          color="pink"
+          header='Convert ETH to DAI and send to other'
+        />
         <Card.Content>
-          <h2>Convert to DAI and send</h2>
           <Form>
             <Form.Field>
-              <label>Amount to get (In DAI) *</label>
-              <Input>
-                <input value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
-              </Input>
-            </Form.Field>
-
-            <Form.Field>
-              <label>Address *</label>
+              <label>Addresses to send converted DAI to *</label>
               <Input
                 value={recipientAddress}
                 placeholder="address"
                 onChange={(e) => setRecipientAddress(e.target.value)}>
                    <input />
-                  <Button onClick={addAddressToList}>Add</Button>
+                  <Button
+                    icon
+                    onClick={addAddressToList}
+                    color='violet'>
+                      <Icon name='add' />
+                  </Button>
               </Input> 
             </Form.Field>
 
-            {addressList.map(address => <p>{address}</p>)}
+            <List>
+              {addressList.map(address => (
+                <List.Item>
+                  <List.Icon name='user' />
+                  <List.Content>{address}</List.Content>
+                </List.Item>
+              ))}
+            </List>
+
+            <Form.Field>
+              <label>Amount (In DAI) *</label>
+              <Input>
+                <input value={daiAmount} onChange={(e) => findETHAmountNeeded(e.target.value)} />
+              </Input>
+            </Form.Field>
+
+            <Divider />
 
             {walletAddress
               ? 
                 <div className="btnandprice">
                   <Button
                     type='submit'
+                    size='large'
+                    color='pink'
                     onClick={convertAndSend}
                   >
-                    Send
+                    Swap and Send
                   </Button>
-                  <p>{(+ethValue).toFixed(5)} ETH required</p>
+                  <div className="btnandprice__labels">
+                    <p>{(+ethValue).toFixed(5)} ETH required</p>
+                    <p>{(daiAmount / addressList.length) || 0} DAI each addresses</p>
+                  </div>
                 </div>
               : <p>Connect to your wallet</p>
             }
