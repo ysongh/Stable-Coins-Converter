@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
-
+import { Message } from 'semantic-ui-react';
 
 import StableCoinsConverter from './artifacts/contracts/StableCoinsConverter.sol/StableCoinsConverter.json';
 import Navbar from './components/layout/Navbar';
@@ -15,6 +15,7 @@ function App() {
   const [address, setAddress] = useState('');
   const [ethBalance, setEthBalance] = useState('');
   const [swapContract, setSwapContract] = useState(null);
+  const [showMessage, setShowMessage] = useState(true);
 
   const connectWallet = async () => {
     const web3Modal = new Web3Modal();
@@ -36,12 +37,22 @@ function App() {
     setSwapContract(contract);
   }
 
+  const handleDismiss = () => {
+    setShowMessage(false);
+  }
+
   return (
     <div>
       <Navbar
         walletAddress={address}
         ethBalance={ethBalance}
         connectWallet={connectWallet} />
+
+    {showMessage && <Message
+      color='teal'
+      onDismiss={handleDismiss}
+      header='Contract is deployed on Kovan Test Network'
+    />}
 
       <SendForm
         walletAddress={address}
