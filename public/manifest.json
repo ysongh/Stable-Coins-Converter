@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Stable Coins Converter",
+  "name": "Stable Coins Converter",
+  "description": "A dapp where users can swap ETH to DAI and send them to multiple addreses",
   "icons": [
     {
       "src": "favicon.ico",
