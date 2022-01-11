@@ -1,4 +1,8 @@
-.transactionHash{
+.ui.segment {
+    padding: 0 !important;
+}
+
+.transactionHash {
     color: green;
     font-size: 1.4rem;
     margin-top: 1rem !important;

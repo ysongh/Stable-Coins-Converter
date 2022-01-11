@@ -42,22 +42,22 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <Navbar
         walletAddress={address}
         ethBalance={ethBalance}
         connectWallet={connectWallet} />
 
-    {showMessage && <Message
-      color='teal'
-      onDismiss={handleDismiss}
-      header='Contract is deployed on Kovan Test Network'
-    />}
+      {showMessage && <Message
+        color='teal'
+        onDismiss={handleDismiss}
+        header='Contract is deployed on Kovan Test Network'
+      />}
 
       <SendForm
         walletAddress={address}
         swapContract={swapContract}/>
-    </div>
+    </>
   );
 }
 

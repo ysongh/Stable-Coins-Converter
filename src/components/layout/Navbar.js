@@ -7,7 +7,7 @@ function Navbar({ walletAddress, ethBalance, connectWallet }) {
       <Container>
         <Menu inverted secondary>
           <Menu.Item>
-            <img src='/logo.png' style={{ width: '10rem'}} alt="Logo" />
+            <img src='/logo.png' style={{ width: '9rem'}} alt="Logo" />
           </Menu.Item>
           <Menu.Menu position='right'>
             {walletAddress
