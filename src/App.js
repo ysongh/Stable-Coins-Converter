@@ -5,6 +5,7 @@ import { Message } from 'semantic-ui-react';
 
 import StableCoinsConverter from './artifacts/contracts/StableCoinsConverter.sol/StableCoinsConverter.json';
 import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import SendForm from './components/SendForm';
 import { STABLECOINSCONVERTERADDRESS } from './config';
 import './App.css';
@@ -57,6 +58,8 @@ function App() {
       <SendForm
         walletAddress={address}
         swapContract={swapContract}/>
+      
+      <Footer />
     </>
   );
 }

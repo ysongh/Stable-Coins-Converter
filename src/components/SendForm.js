@@ -59,7 +59,7 @@ function SendForm({ walletAddress, swapContract }) {
   }
 
   return (
-    <Container>
+    <Container style={{ minHeight: '68.5vh' }}>
       <Card centered className="form-card">
         <Message
           attached
