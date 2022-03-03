@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
+
+/**
+    ## Disclaimer
+    These contracts are not audited.  Please review this code on your own before
+    using any of the following code for production.  I will not be responsible or
+    liable for all loss or damage caused from this project.
+*/
+
 pragma solidity 0.7.6;
 pragma abicoder v2;
 

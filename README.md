@@ -37,3 +37,6 @@ ALCHEMYAPI_KEY=< Your Alchemy API key >
 ```
 - Run `npx hardhat run scripts/sample-script.js --network kovan` to deploy the contract to Kovan Testnet
 - Run `npm start` to start the dapp
+
+## Disclaimer
+These contracts are not audited.  Please review this code on your own before using any of the following code for production.  I will not be responsible or liable for all loss or damage caused from this project.
