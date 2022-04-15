@@ -88,7 +88,8 @@ function SendForm({ walletAddress, swapContract }) {
                   <Button
                     icon
                     onClick={addAddressToList}
-                    color='violet'>
+                    color='violet'
+                    disabled={!recipientAddress.length}>
                       <Icon name='add' />
                   </Button>
               </Input> 
