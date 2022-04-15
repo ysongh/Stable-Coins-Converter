@@ -10,6 +10,7 @@ function SendForm({ walletAddress, swapContract }) {
   const [recipientAddress, setRecipientAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [transactionHash, setTransactionHash] = useState('');
+  const [showMessage, setShowMessage] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const addAddressToList = () => {
@@ -58,8 +59,17 @@ function SendForm({ walletAddress, swapContract }) {
     }
   }
 
+  const handleDismiss = () => {
+    setShowMessage(false);
+  }
+
   return (
     <Container style={{ minHeight: '68.5vh' }}>
+      {showMessage && <Message
+        color='teal'
+        onDismiss={handleDismiss}
+        header='Contract is deployed on Kovan Test Network'
+      />}
       <Card centered className="form-card">
         <Message
           attached
